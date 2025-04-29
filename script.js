@@ -74,19 +74,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-// Initialize particles.js
-document.addEventListener('DOMContentLoaded', function() {
-    // Particles.js initialization
-    if (document.getElementById('particles-js')) {
-        particlesJS.load('particles-js', 'particles.json', function() {
-            console.log('Particles.js loaded');
-        });
-    }
 
-    // Initialize AOS (Animate On Scroll)
-    AOS.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true
-    });
-});
+// Function to handle CV download
+function handleDownload(event) {
+    // Prevent the default behavior
+    event.preventDefault();
+    
+    const link = event.currentTarget;
+    const filePath = link.getAttribute('href');
+    
+    // Check if file exists
+    fetch(filePath)
+        .then(response => {
+            if (response.ok) {
+                // If file exists, trigger download
+                window.location.href = filePath;
+            } else {
+                console.error('CV file not found');
+                alert('Sorry, the CV file is currently unavailable. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Error downloading CV:', error);
+            alert('Sorry, there was a problem downloading the CV. Please try again later.');
+        });
+}
